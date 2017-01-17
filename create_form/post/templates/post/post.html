@@ -1,0 +1,24 @@
+{% load crispy_forms_tags %}
+
+
+{% if confirm_message %}
+  <h2>{{ confirm_message }}</h2>
+
+  {% if allposts %}
+  {% for post in allposts %}
+    <h3>{{ post.title }}</h3>
+    <li><a href="{% url 'post:delete' post_id=post.id %}">Delete</a></li>
+  {% endfor %}
+  {% endif %}
+
+{% else %}
+  <h1>{{ title }}</h1>
+{% endif %}
+
+{% if form %}
+<form action="" method="post">
+  {% csrf_token %}
+  {{ form|crispy }}
+  <input type="submit" value="Submit">
+</form>
+{% endif %}
