@@ -1,2 +1,124 @@
-Authentication is a very important part of creating any website and the developer usually sets up authentication from scratch, resulting in a lot of time
-being wasted. Ok? halua!
+Authentication is a very important part of creating any website and the developer usually sets up authentication from scratch, resulting in
+a lot of time being wasted. So today I'm going to show you a very easy and time-efficient way to let django handle authentication. We will
+use an existing authentication app which will be plugged into out project.
+
+1)Create a virtual environment. First navigate to the Scripts folder in your python folder, open a command window there and type
+  pip install virtualenv
+
+  Go to where you want to create the project, open a command window there and type:
+    [file path to your virtualenv script] [name of virtual environment]
+  For example, the path to my virtualenv script is D:\Python\Scripts\virtualenv and I want to create a virtual environment named vev so I type:
+    D:\Python\Scripts\virtualenv vev
+
+  After the vev folder is created, navigate to vev\Scripts, open command window and type:
+    activate
+  This will activate the virtual environment
+
+2)You will need to install django and django-allauth. Django-allauth is going to handle all the authentication so that you don't have to. Type:
+  pip install django
+  pip install django-allauth
+
+3)Create a project called login_logout_register. You do this by navigating to opening a command window in the vev folder and typing:
+  django-admin startproject login_logout_register
+
+3)Navigate to the login_logout_register folder, open cmd window and type:
+  python manage.py startapp homepage
+  This is going to be the homepage after we login/register
+  Add homepage to installed_apps in settings
+
+4)Go to login_logout_register/login_logout_register/settings.py and insert the code snippets as mentioned here:
+   http://django-allauth.readthedocs.io/en/latest/installation.html
+
+5) Next you will have to add configurations to the bottom of the settings file:
+
+LOGIN_URL = '/accounts/login/'
+
+LOGIN_REDIRECT_URL='/'
+
+ACCOUNT_AUTHENTICATION_METHOD = "username_email"
+ACCOUNT_CONFIRM_EMAIL_ON_GET = False
+ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = LOGIN_URL
+ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL =None
+
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 3
+ACCOUNT_EMAIL_REQUIRED = False
+ACCOUNT_EMAIL_VERIFICATION = None
+ACCOUNT_EMAIL_SUBJECT_PREFIX = "My Subject: "
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'http'
+
+
+ACCOUNT_LOGOUT_ON_GET =False
+ACCOUNT_LOGOUT_REDIRECT_URL = "/accounts/login"
+ACCOUNT_SIGNUP_FORM_CLASS = None
+ACCOUNT_SIGNUP_PASSWORD_VERIFICATION = True
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_USER_MODEL_USERNAME_FIELD = "username"
+ACCOUNT_USER_MODEL_EMAIL_FIELD = "email"
+
+
+ACCOUNT_USERNAME_MIN_LENGTH = 5
+ACCOUNT_USERNAME_BLACKLIST = []
+ACCOUNT_USERNAME_REQUIRED = True
+ACCOUNT_PASSWORD_INPUT_RENDER_VALUE =False
+ACCOUNT_PASSWORD_MIN_LENGTH = 6
+ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
+
+If you want more information about each of these fields, check out the link: http://django-allauth.readthedocs.io/en/latest/configuration.html
+
+6) If you want your project to send a reset password mail when the user forgets password, add the following code to settings.py :
+
+EMAIL_HOST='smtp.gmail.com'
+#Input username and password
+EMAIL_HOST_USER=''
+EMAIL_HOST_PASSWORD=''
+
+EMAIL_PORT='587'
+EMAIL_USE_TLS=True
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+Enter your username and password so that the system can send the password reset mail from your account
+
+7)If you are using gmai you will have to change the setting of your account to less secure in order to test this.
+For changing the setting go to:
+  https://www.google.com/settings/security/lesssecureapps
+
+8)Go to your urls.py file in the login_logout_register folder and type:
+
+from django.conf.urls import url, include
+from django.contrib import admin
+
+urlpatterns = [
+    url(r'^admin/', admin.site.urls),
+    url(r'^accounts/', include('allauth.urls')),
+    url(r'^', include('homepage.urls'))
+]
+
+This establishes a connection with the allauth and homepage apps. If nothing is typed in the URL bar the user will be directed to
+homepage.urls.
+
+9)Navigate to homepage folder, create a new file named urls.py and insert the following:
+
+from django.conf.urls import url, include
+from . import views
+app_name='homepage'
+urlpatterns = [
+
+     url(r'^$', views.homepage, name='homepage')
+]
+
+10)Go to views and type:
+
+from django.shortcuts import render
+
+# Create your views here.
+def homepage(request):
+    template = 'homepage/homepage.html'
+    return render(request, template, {})
+
+11)Create a folder called templates. Under it create another folder named homepage. Under this folder create a new homepage.html file:
+
+  <h1>Hello</h1>
+  <li><a href="{% url 'account_logout' %}">Logout</a></li>
+  A hello will be displayed with a link that will direct you to the logout page
+
+And that's it! You have successfully created an authentication system for your project!
