@@ -7,7 +7,7 @@
   <title>{% block title %}Django Auth Tutorial{% endblock %}</title>
 </head>
 <body>
-	<nav class="navbar navbar-expand-md navbar-light bg-dark fixed-top">
+	<nav class="navbar navbar-expand-md navbar-light bg-success static-top">
 		<a class="navbar-brand" href="#"><i class="fas fa-child text-warning fa-2x"></i></a>
 			<button type="button" class="navbar-toggler bg-light" data-toggle="collapse" data-target="#nav"><span class="navbar-toggler-icon"></span></button>
 			<div class="collapse navbar-collapse justify-content-between" id="nav">
@@ -38,8 +38,10 @@
 			</div>
 		</nav>
   <main>
+  	<div class="container">
     {% block content %}
     {% endblock %}
+	</div>
   </main>
 </body>
 </html>
