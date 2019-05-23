@@ -7,8 +7,16 @@
 {% if user.is_authenticated %}
   Hi {{ user.username }}!
   <p><a href="{% url 'logout' %}">logout</a></p>
+   <p>Posts</p>
+   <ul>
+	   {% for post in object_list %}
+	   		<h2><a href="{% url 'detail' post.id %}">{{ post.post_title }}</a></h2>
+	   		<p>{{ post.post_text }}</p>
+	   {% endfor %}
+   </ul>
 {% else %}
   <p>You are not logged in</p>
   <a href="{% url 'login' %}">login</a>
+
 {% endif %}
 {% endblock %}
