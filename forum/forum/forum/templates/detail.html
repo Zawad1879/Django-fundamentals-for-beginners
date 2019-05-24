@@ -7,4 +7,9 @@
 	{% for comment in comment_list %}
 		<p>{{ comment.comment_text }}</p>
 	{% endfor %}
+
+	<form action="{% url 'detail' post.id %}" method="post" id="form1">
+		{% csrf_token %}
+	<textarea id = "newcomment" name="newcomment" rows="4" cols="50">At w3schools.com you will learn how to make a website. We offer free tutorials in all web development technologies. </textarea>
+	<button type="submit" form="form1" value="Submit">Submit</button>
 {% endblock %}
