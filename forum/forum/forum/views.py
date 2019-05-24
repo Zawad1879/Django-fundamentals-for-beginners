@@ -17,7 +17,8 @@ class DetailView(generic.DetailView):
 		# Call the base implementation first to get a context
 		context = super().get_context_data(**kwargs)
 		
-		context['comment_list'] = Comment.objects.filter(id=self.kwargs['pk'])
+		context['comment_list'] = Comment.objects.filter(post_id=self.kwargs['pk'])
+		print(context['comment_list'])
 		return context
 
 	def post(self, request, *args, **kwargs):
