@@ -1,5 +1,5 @@
 defusedxml==0.4.1
-Django==1.10.5
+Django==1.11.28
 django-allauth==0.30.0
 oauthlib==2.0.1
 python3-openid==3.0.10
